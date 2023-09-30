@@ -5,10 +5,9 @@ var iconSize = 30.0;
 class FooterBar {
   static Widget getMineBar(
     BuildContext context,
-    Color colorsMineMenu,
-    Color colorsListFriends,
-    Color colorsStileApp,
-    Color colorsDetails,
+    Color eventList,
+    Color createEvent,
+    Color myTickets
   ) {
     return BottomAppBar(
       elevation: 0,
@@ -18,10 +17,9 @@ class FooterBar {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(height: 100),
-          buttonForm(context, "Mine menu", Icons.home_filled, colorsMineMenu, '/'),
-          buttonForm(context, "Searcher", Icons.api, colorsListFriends, '/searcher'),
-          buttonForm(context, "Stile app", Icons.add_chart, colorsStileApp, ''),
-          buttonForm(context, "Details", Icons.adjust, colorsDetails, '/flip_card'),
+          buttonForm(context, "Events", Icons.home_filled, eventList, '/events'),
+          buttonForm(context, "Create Event", Icons.api, createEvent, '/create_event'),
+          buttonForm(context, "My tickets", Icons.add_chart, myTickets, '/my_tickets'),
           const SizedBox(height: 100),
         ],
       ),

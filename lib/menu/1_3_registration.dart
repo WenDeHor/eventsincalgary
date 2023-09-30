@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:eventsincalgary/db/user_database.dart';
 import 'package:eventsincalgary/model/user.dart';
-import '../utils/app_bar.dart';
-import '../utils/app_bar.dart';
 import 'package:eventsincalgary/utils/footer_bar.dart';
+import 'package:eventsincalgary/utils/generator_user_key.dart';
+import 'package:flutter/material.dart';
+
+import '../utils/app_bar.dart';
 
 class UserRegistration extends StatefulWidget {
   const UserRegistration({Key? key}) : super(key: key);
@@ -13,8 +15,8 @@ class UserRegistration extends StatefulWidget {
 
 class UserRegistrationState extends State<UserRegistration> {
   late UserDatabase userDatabase;
+  GeneratorUserId generatorUserId = GeneratorUserId();
   List<User> userList = [];
-  List<UserFirebase> globalUsersList = [];
   final _formKeyRegistration = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -24,23 +26,14 @@ class UserRegistrationState extends State<UserRegistration> {
   void initState() {
     super.initState();
     userDatabase = UserDatabase();
-    _initFirebase();
     userDatabase.getDataBase().whenComplete(() async {
       _getUserInfo();
       setState(() {});
     });
   }
 
-  void _initFirebase() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    final globalUsers = await Firebase.initializeApp().whenComplete(() {
-      print("completed Firebase ++++");
-      setState(() {});
-    });
-  }
-
   void _getUserInfo() async {
-    final users = await userDatabase.getMineUser();
+    final users = await userDatabase.getAllUsers();
     print("++++++++++++++++++${users.toString()}");
     print("++++++++++++++++++${users.length}");
     setState(() {
@@ -172,7 +165,7 @@ class UserRegistrationState extends State<UserRegistration> {
                   _phoneController.text,
                   _passwordController.text,
                   _nameController.text,
-                  _phoneController.text);
+                  generatorUserId.generateIdByPhone(_phoneController.text));
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Success!. Account created'),
@@ -195,6 +188,14 @@ class UserRegistrationState extends State<UserRegistration> {
 
   dynamic validatorInput(dynamic value, int min, int max, String error) {
     if (value.isEmpty || value.length < min || value.length > max) {
+      return error;
+    }
+    return null;
+  }
+//TODO add to phone
+  dynamic validatorPhone(dynamic value, int min, int max, String error) {
+    RegExp regExp = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');
+    if (value.isEmpty || value.length < min || value.length > max || !regExp.hasMatch(value)) {
       return error;
     }
     return null;

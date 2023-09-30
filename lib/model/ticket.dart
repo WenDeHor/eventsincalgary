@@ -1,7 +1,7 @@
 class Ticket {
   final int? id;
-  final int? eventId;
-  final int? userId;
+  final int? eventId; //id from FB
+  final int? userKey;
   final String? userPhone;
   final String? userName;
   final String? userTicketNumber;
@@ -10,14 +10,14 @@ class Ticket {
   final String? titleEvent;
   final String? descriptionEvent;
 
-  Ticket(this.id, this.eventId, this.userId, this.userPhone, this.userName, this.userTicketNumber, this.dataEvent, this.address, this.titleEvent,
+  Ticket(this.id, this.eventId, this.userKey, this.userPhone, this.userName, this.userTicketNumber, this.dataEvent, this.address, this.titleEvent,
       this.descriptionEvent);
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'eventId': eventId,
-      'userId': userId,
+      'userKey': userKey,
       'userPhone': userPhone,
       'userName': userName,
       'userTicketNumber': userTicketNumber,
@@ -35,7 +35,7 @@ class Ticket {
           runtimeType == other.runtimeType &&
           id == other.id &&
           eventId == other.eventId &&
-          userId == other.userId &&
+          userKey == other.userKey &&
           userPhone == other.userPhone &&
           userName == other.userName &&
           userTicketNumber == other.userTicketNumber &&
@@ -48,7 +48,7 @@ class Ticket {
   int get hashCode =>
       id.hashCode ^
       eventId.hashCode ^
-      userId.hashCode ^
+      userKey.hashCode ^
       userPhone.hashCode ^
       userName.hashCode ^
       userTicketNumber.hashCode ^
@@ -59,6 +59,6 @@ class Ticket {
 
   @override
   String toString() {
-    return 'Ticket{id: $id, eventId: $eventId, userId: $userId, userPhone: $userPhone, userName: $userName, userTicketNumber: $userTicketNumber, dataEvent: $dataEvent, address: $address, titleEvent: $titleEvent, descriptionEvent: $descriptionEvent}';
+    return 'Ticket{id: $id, eventId: $eventId, userKey: $userKey, userPhone: $userPhone, userName: $userName, userTicketNumber: $userTicketNumber, dataEvent: $dataEvent, address: $address, titleEvent: $titleEvent, descriptionEvent: $descriptionEvent}';
   }
 }

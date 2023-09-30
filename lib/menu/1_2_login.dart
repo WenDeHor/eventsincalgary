@@ -1,3 +1,4 @@
+import 'package:eventsincalgary/db/user_database.dart';
 import 'package:eventsincalgary/model/user.dart';
 import 'package:flutter/material.dart';
 import '../utils/app_bar.dart';
@@ -28,7 +29,7 @@ class UserLoginState extends State<UserLogin> {
   }
 
   void _getUserInfo() async {
-    final users = await userDatabase.getMineUser();
+    final users = await userDatabase.getAllUsers();
     print("++++++++++++++++++${users.toString()}");
     print("++++++++++++++++++${users.length}");
     setState(() {
