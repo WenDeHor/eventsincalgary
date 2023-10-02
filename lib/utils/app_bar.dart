@@ -12,19 +12,19 @@ class AppBarConstructor {
       title: Text(appName, style: getTextStileTitle()),
       backgroundColor: themeAppColor,
       automaticallyImplyLeading: false,
-      actions: <Widget>[
-        getLoginMineWidget(context),
-      ],
+//      actions: <Widget>[
+//        getLoginMineWidget(context),
+//      ],
     );
   }
 
-  static PreferredSizeWidget infoAppBar(BuildContext context) {
+  static PreferredSizeWidget revertAppBar(BuildContext context) {
     return AppBar(
       title: Text(appName, style: getTextStileTitle()),
       backgroundColor: themeAppColor,
       automaticallyImplyLeading: false,
       actions: <Widget>[
-        revertToMineMenuWidget(context),
+        revertToPreviousWidget(context),
       ],
     );
   }
@@ -73,14 +73,14 @@ class AppBarConstructor {
     );
   }
 
-  static Padding revertToMineMenuWidget(BuildContext context) {
+  static Padding revertToPreviousWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
       child: IconButton(
         icon: const Icon(Icons.fast_rewind, size: 40),
         onPressed: () async {
-//          Navigator.pop(context);
-          Navigator.pushNamed(context, '/');
+          Navigator.pop(context);
+//          Navigator.pushNamed(context, '/');
         },
       ),
     );
