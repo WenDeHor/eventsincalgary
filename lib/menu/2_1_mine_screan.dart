@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eventsincalgary/db/event_database.dart';
+import 'package:eventsincalgary/db/user_database.dart';
 import 'package:eventsincalgary/model/event.dart';
+import 'package:eventsincalgary/model/user.dart';
 import 'package:eventsincalgary/utils/constants.dart';
 import 'package:eventsincalgary/utils/footer_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:eventsincalgary/menu/2_1_1_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/app_bar.dart';
@@ -25,27 +30,75 @@ class MyApp extends StatefulWidget {
 }
 
 class HomeScreenState extends State<MyApp> {
+  late UserDatabase userDatabase;
+  List<User> _userList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    initFirebase();
+
+    userDatabase = UserDatabase();
+    userDatabase.getDataBase().whenComplete(() async {
+      _getUserInfo();
+      setState(() {});
+    });
+  }
+
+  void initFirebase() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp().whenComplete(() {
+      print("Firebase loaded");
+      setState(() {});
+    });
+  }
+
+  void _getUserInfo() async {
+    final users = await userDatabase.getAllUsers();
+    print("++++++++++++++++++${users.toString()}");
+    print("++++++++++++++++++${users.length}");
+    setState(() {
+      _userList = users;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarConstructor.mineAppBar(context),
       body: SingleChildScrollView(
-        child: Container(
-          margin: themeMargin,
-          padding: themePadding,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              eventFolder("image", "title", "date", "place"),
-            ], //
-          ),
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('events').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Text('Not present events');
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data?.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: Container(
+                        margin: themeMargin,
+                        padding: themePadding,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            eventFolder(snapshot.data?.docs[index].get('image'), snapshot.data?.docs[index].get('title'),
+                                snapshot.data?.docs[index].get('date'), snapshot.data?.docs[index].get('address'), snapshot, index),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            }
+          },
         ),
       ),
       bottomNavigationBar: FooterBar.getMineBar(context, Colors.blue, Colors.brown, Colors.brown),
     );
   }
 
-  OutlinedButton eventFolder(String image, String title, String date, String place) {
+  OutlinedButton eventFolder(String image, String title, String date, String place, AsyncSnapshot<QuerySnapshot> snapshot, int index) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         primary: Colors.blue,
@@ -57,15 +110,24 @@ class HomeScreenState extends State<MyApp> {
       ),
       onPressed: () {
         //TODO show tickets from FB
-//        Navigator.push(
-//          context,
-//          CupertinoPageRoute(
-//            builder: (_) => EventPage(
-//              title: ossLicenses[index].name[0].toUpperCase() + ossLicenses[index].name.substring(1),
-//              licence: ossLicenses[index].license!,
-//            ),
-//          ),
-//        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailScreen(
+              id: snapshot.data?.docs[index].get('id'),
+              image: snapshot.data?.docs[index].get('image'),
+              phoneContact: snapshot.data?.docs[index].get('phone_contact'),
+              address: snapshot.data?.docs[index].get('address'),
+              date: snapshot.data?.docs[index].get('data'),
+              title: snapshot.data?.docs[index].get('title'),
+              description: snapshot.data?.docs[index].get('description'),
+              userKeyByEvent: snapshot.data?.docs[index].get('user_key'),
+              userKey: _userList.last.userKey!,
+              userPhone: _userList.last.phone!,
+              userName: _userList.last.name!,
+            ),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),

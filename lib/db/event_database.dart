@@ -40,7 +40,7 @@ class EventDatabase {
           image: usersMaps[index]["image"],
           phoneContact: usersMaps[index]["phone_contact"],
           address: usersMaps[index]["address"],
-          data: usersMaps[index]["data"],
+          date: usersMaps[index]["date"],
           title: usersMaps[index]["title"],
           description: usersMaps[index]["description"],
           userKey: usersMaps[index]["user_key"]);
@@ -53,8 +53,8 @@ class EventDatabase {
     return data.isNotEmpty ? Event.fromMap(data.first) : const Event();
   }
 
-  EventDto createEventDto(String image, String phoneContact, String address, String data, String title, String description, int userKey) {
-    return EventDto(image: image, phoneContact: phoneContact, address: address, data: data, title: title, description: description, userKey: userKey);
+  EventDto createEventDto(String image, String phoneContact, String address, String date, String title, String description, int userKey) {
+    return EventDto(image: image, phoneContact: phoneContact, address: address, date: date, title: title, description: description, userKey: userKey);
   }
 
   String queryToCreateEventTable() {
@@ -64,7 +64,7 @@ class EventDatabase {
         image TEXT, 
         phone_contact TEXT,   
         address TEXT, 
-        data TEXT, 
+        date TEXT, 
         title TEXT,
         description TEXT,
         user_key INTEGER);

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "895456095201",
+    "project_id": "event-calgary",
+    "storage_bucket": "event-calgary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895456095201:android:d8bf1e4c81a230d7de40a0",
+        "android_client_info": {
+          "package_name": "com.example.eventsincalgary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX7C_YUlFDJh0SRfRMlDv91pvPfPEIckE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

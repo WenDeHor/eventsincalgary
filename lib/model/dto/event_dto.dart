@@ -2,7 +2,7 @@ class EventDto {
   final String? image;
   final String? phoneContact;
   final String? address;
-  final String? data;
+  final String? date;
   final String? title;
   final String? description;
   final int? userKey;
@@ -11,7 +11,7 @@ class EventDto {
     required this.image,
     required this.phoneContact,
     required this.address,
-    required this.data,
+    required this.date,
     required this.title,
     required this.description,
     required this.userKey,
@@ -22,7 +22,7 @@ class EventDto {
       'image': image,
       'phoneContact': phoneContact,
       'address': address,
-      'data': data,
+      'date': date,
       'title': title,
       'description': description,
       'userKey': userKey,
@@ -37,17 +37,17 @@ class EventDto {
           image == other.image &&
           phoneContact == other.phoneContact &&
           address == other.address &&
-          data == other.data &&
+          date == other.date &&
           title == other.title &&
           description == other.description &&
           userKey == other.userKey;
 
   @override
   int get hashCode =>
-      image.hashCode ^ phoneContact.hashCode ^ address.hashCode ^ data.hashCode ^ title.hashCode ^ description.hashCode ^ userKey.hashCode;
+      image.hashCode ^ phoneContact.hashCode ^ address.hashCode ^ date.hashCode ^ title.hashCode ^ description.hashCode ^ userKey.hashCode;
 
   @override
   String toString() {
-    return 'EventDto{image: $image, phoneContact: $phoneContact, address: $address, data: $data, title: $title, description: $description, userKey: $userKey}';
+    return 'EventDto{image: $image, phoneContact: $phoneContact, address: $address, data: $date, title: $title, description: $description, userKey: $userKey}';
   }
 }
